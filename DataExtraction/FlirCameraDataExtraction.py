@@ -53,17 +53,22 @@ class DataExtraction:
         for i in range(self.im.num_frames):
             self.im.get_frame(i)
 
-            data = np.array(self.im.final, copy=False).reshape(
+            data = np.array(self.im.final).reshape(
                 self.im.height, self.im.width
             )
 
             video.append(data)
 
-        video = np.swapaxes(np.stack(video), 0, 2)  # Frame H W --> W H Frame
+        video = np.transpose(np.stack(video), (1, 2, 0))  # Frame H W -->  H W Frame
+        
+        
+        
+        print(video.shape)
 
         if save:
-            with open("seq30.npy", "wb") as f:
-                np.save(f, video[:, :, 66:2115])
+            
+            np.savez('seq30.npz',skin=video[:, :, 66:2115])
+           
 
         else:
             return video
@@ -102,7 +107,7 @@ class DataExtraction:
       
 
 if __name__ == "__main__":
-    video_path = "Rec-000030.seq"
+    video_path = "/home/nipun/Documents/Uni_Malta/Alive/Alive/Paper_Implementation/Jean'sCode/Rec-000030.seq"
     dataExt = DataExtraction(video_path)
-    dataExt.plot_data()
+    # dataExt.plot_data()
     dataExt.data_extraction(save=True)
