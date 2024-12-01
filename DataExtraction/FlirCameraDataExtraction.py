@@ -53,22 +53,17 @@ class DataExtraction:
         for i in range(self.im.num_frames):
             self.im.get_frame(i)
 
-            data = np.array(self.im.final).reshape(
-                self.im.height, self.im.width
-            )
+            data = np.array(self.im.final).reshape(self.im.height, self.im.width)
 
             video.append(data)
 
         video = np.transpose(np.stack(video), (1, 2, 0))  # Frame H W -->  H W Frame
-        
-        
-        
+
         print(video.shape)
 
         if save:
-            
-            np.savez('seq30.npz',skin=video[:, :, 66:2115])
-           
+
+            np.savez("seq43.npz", skin=video[:, :, 2:2000])
 
         else:
             return video
@@ -104,10 +99,45 @@ class DataExtraction:
 
         plt.show()
 
-      
+
+def plotSinglePixel(video, x, y):
+    npz = np.load(video)
+
+    skin_lesion = npz["skin"]
+
+    skin_lesion = skin_lesion[:, :, :200]
+
+    print(skin_lesion.shape)
+
+    data = []
+    for i in range(skin_lesion.shape[2]):
+
+        temperature = skin_lesion[:, :, i][x, y]
+
+        # plt.imshow(skin_lesion[:,:,i])
+        # plt.plot(x,y,'ro')
+        # plt.show()
+
+        data.append(temperature)
+
+    plt.scatter(range(len(data)), data)
+    plt.show()
+
+    # print(data)
+    # print(len(data))
+
+
+# 355,215
 
 if __name__ == "__main__":
-    video_path = "/home/nipun/Documents/Uni_Malta/Alive/Alive/Paper_Implementation/Jean'sCode/Rec-000030.seq"
+    video_path = (
+        "/home/nipun/Documents/Uni_Malta/Alive/Alive/DataExtraction/Rec-000043.seq"
+    )
     dataExt = DataExtraction(video_path)
     # dataExt.plot_data()
-    dataExt.data_extraction(save=True)
+    # dataExt.data_extraction(save=True)
+
+    # Saved Data
+    saved_video = "seq43.npz"
+
+    plotSinglePixel(saved_video, 355, 215)
