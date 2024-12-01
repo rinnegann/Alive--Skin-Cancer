@@ -1,3 +1,13 @@
+"""
+This code is supposed to decomposition of thermal data and analysis thermal data to identify different
+sources of temporal changes  in the skin thermal data
+
+Code and Paper Obtained by: https://www.sciencedirect.com/science/article/abs/pii/S1350449520304072?via%3Dihub
+
+"""
+
+
+
 #%%
 import sys 
 import numpy as np 
@@ -47,7 +57,7 @@ def computePCA(data):
         return components, eigenValues, scores
 
 #%%
-hand_lesion = np.load("/home/nipun/Documents/Uni_Malta/Alive/Alive/DataExtraction/seq30.npz")
+hand_lesion = np.load("seq43.npz")
 #%%
 
 
